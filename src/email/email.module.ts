@@ -13,7 +13,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       },
       template: {
         dir: __dirname + '/templates',
-        adapter: new HandlebarsAdapter(), 
+        adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },

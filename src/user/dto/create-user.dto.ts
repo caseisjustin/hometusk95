@@ -1,4 +1,13 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsEnum, MinLength, IsString, IsPhoneNumber, IsDateString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsEnum,
+  MinLength,
+  IsString,
+  IsPhoneNumber,
+  IsDateString,
+} from 'class-validator';
 import { Role } from '@prisma/client';
 
 export class CreateUserDto {
@@ -12,7 +21,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   full_name: string;
 
-  @IsPhoneNumber("US")
+  @IsPhoneNumber('US')
   phone: string;
 
   @IsOptional()

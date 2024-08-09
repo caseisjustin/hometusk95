@@ -7,7 +7,7 @@ export class CreateFileDto {
   url: string;
 
   @ApiProperty({ description: 'MIME type of the file' })
-  @IsString() 
+  @IsString()
   mimetype: string;
 
   @ApiProperty({ description: 'Size of the file in bytes' })
@@ -19,7 +19,6 @@ export class CreateFileDto {
   @IsUUID()
   car_id: string;
 }
-
 
 // import { IsString, IsUUID, IsNumber } from 'class-validator';
 

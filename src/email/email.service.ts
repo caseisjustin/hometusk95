@@ -1,45 +1,3 @@
-// import { Injectable } from '@nestjs/common';
-// import { MailerService } from '@nestjs-modules/mailer';
-// import { PrismaService } from '../prisma/prisma.service';
-// import { User } from '@prisma/client';
-// import * as crypto from 'crypto';
-
-// @Injectable()
-// export class EmailService {
-//   constructor(
-//     private readonly mailerService: MailerService,
-//     private readonly prisma: PrismaService,
-//   ) {}
-
-//   async sendVerificationEmail(user: Partial<User> & { id: string; email: string; full_name: string }): Promise<void> {
-//     const token = crypto.randomBytes(32).toString('hex');
-//     const expires = new Date();
-//     expires.setHours(expires.getHours() + 1); 
-
-//     const expiresString = expires.toISOString();
-
-//     await this.prisma.user.update({
-//       where: { id: user.id },
-//       data: {
-//         emailVerificationToken: token,
-//         emailVerificationTokenExpires: expiresString,
-//       },
-//     });
-
-//     const url = `http://localhost:3000/auth/verify-email?token=${token}&id=${user.id}`;
-
-//     await this.mailerService.sendMail({
-//       to: user.email,
-//       subject: 'Verify your email',
-//       template: './verification', // Verification email uchun template
-//       context: {
-//         name: user.full_name,
-//         url,
-//       },
-//     });
-//   }
-// }
-
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { UserService } from 'src/user/user.service';
@@ -55,7 +13,7 @@ export class EmailService {
     await this.mailerService.sendMail({
       to: email,
       subject: 'Verify your email',
-      html: `Please verify your email by clicking this link <a href=${ url }>VERIFY</a>`, // Context data for your template
+      html: `Please verify your email by clicking this link <a href=${url}>VERIFY</a>`, // Context data for your template
     });
   }
   async sendVerificationEmailForgotPass(email: string, token: string) {
@@ -63,7 +21,7 @@ export class EmailService {
     await this.mailerService.sendMail({
       to: email,
       subject: 'Reset password',
-      html: `Please use this link to reset your password <a href=${ url }>VERIFY</a>`, // Context data for your template
+      html: `Please use this link to reset your password <a href=${url}>VERIFY</a>`, // Context data for your template
     });
   }
   async verifyEmail(token: string) {

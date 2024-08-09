@@ -1,4 +1,10 @@
-import { IsUUID, IsEnum, IsNumber, IsJSON, IsDateString } from 'class-validator';
+import {
+  IsUUID,
+  IsEnum,
+  IsNumber,
+  IsJSON,
+  IsDateString,
+} from 'class-validator';
 import { TransactionStatus } from '../../common/enums/transaction-status.enum';
 
 export class CreateTransactionDto {

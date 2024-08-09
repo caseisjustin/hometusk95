@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, MinLength, IsOptional, IsStrongPassword } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  IsOptional,
+  IsStrongPassword,
+} from 'class-validator';
 import { Role } from '@prisma/client';
 
 export class RegisterDto {

@@ -1,5 +1,4 @@
 export enum TransactionStatus {
-    DEBIT = 'debit',
-    CREDIT = 'credit',
-  }
-  
+  DEBIT = 'debit',
+  CREDIT = 'credit',
+}

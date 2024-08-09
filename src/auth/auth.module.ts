@@ -26,20 +26,26 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
       inject: [ConfigService],
     }),
     UserModule,
-    ConfigModule
+    ConfigModule,
   ],
   providers: [
-    AuthService, 
-    LocalStrategy, 
-    JwtStrategy, 
-    PrismaService, 
-    EmailService, 
-    SessionSerializer, 
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    PrismaService,
+    EmailService,
+    SessionSerializer,
     RolesGuard,
     JwtAuthGuard,
-    LocalAuthGuard
+    LocalAuthGuard,
   ],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard, LocalAuthGuard, RolesGuard, PassportModule],
+  exports: [
+    AuthService,
+    JwtAuthGuard,
+    LocalAuthGuard,
+    RolesGuard,
+    PassportModule,
+  ],
 })
 export class AuthModule {}

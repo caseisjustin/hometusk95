@@ -4,7 +4,6 @@ export class UpdateCompanyDto {
   @IsString()
   @IsOptional()
   name?: string;
-  
 
   @IsString()
   @IsOptional()

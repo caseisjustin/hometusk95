@@ -1,5 +1,4 @@
 export class SendNotificationDto {
-    chatId: string;
-    message: string;
-  }
-  
+  chatId: string;
+  message: string;
+}

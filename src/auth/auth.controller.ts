@@ -1,4 +1,15 @@
-import { Controller, Post, Body, Request, UseGuards, Get, Query, ConflictException, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Request,
+  UseGuards,
+  Get,
+  Query,
+  ConflictException,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -28,7 +39,12 @@ export class AuthController {
   @Post('reset-password')
   async resetPassword(@Body() body) {
     const { email, oldPassword, newPassword, confirmNewPassword } = body;
-    return this.authService.resetPassword(email, oldPassword, newPassword, confirmNewPassword);
+    return this.authService.resetPassword(
+      email,
+      oldPassword,
+      newPassword,
+      confirmNewPassword,
+    );
   }
 
   @Post('forgot-password')
@@ -38,18 +54,13 @@ export class AuthController {
   }
 
   @Post('verifypass')
-  async verifyPassword(@Body() body, @Query() param){
-    const { password, newPassword} = body
-    const {token} = param
+  async verifyPassword(@Body() body, @Query() param) {
+    const { password, newPassword } = body;
+    const { token } = param;
     return this.authService.confirmPassword(token, password, newPassword);
   }
 
-  // @Post('verify-email')
-  // async verifyEmail(@Query('token') token: string, @Query('id') id: string) {
-  //   return this.authService.verifyEmail(token, id);
-  // }
-
-@Get('verify-email')
+  @Get('verify-email')
   @HttpCode(HttpStatus.OK)
   async verifyEmail(@Query() verifyEmailDto: VerifyEmailDto) {
     const { token, email } = verifyEmailDto;

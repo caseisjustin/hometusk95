@@ -1,5 +1,12 @@
 // update-user.dto.ts
-import { IsOptional, IsString, IsEmail, IsPhoneNumber, IsEnum, IsBoolean } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsEmail,
+  IsPhoneNumber,
+  IsEnum,
+  IsBoolean,
+} from 'class-validator';
 import { Role } from 'src/common/enums/role.enum';
 
 export class UpdateUserDto {

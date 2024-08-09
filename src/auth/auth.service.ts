@@ -36,7 +36,7 @@
 //         isActive: true, // Ensure isActive is set to true
 //       },
 //     });
-    
+
 //     // Generate verification token
 //     const token = await this.generateVerificationToken(user.email);
 
@@ -92,7 +92,7 @@
 //     await this.userService.confirmPassword(email, password)
 //     return "Password updated"
 //   }
-  
+
 //   async findUserById(id: string): Promise<User> {
 //     return this.userService.findById(id);
 //   }
@@ -186,9 +186,13 @@
 //   }
 // }
 
-
 // src/auth/auth.service.ts
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from 'src/user/entities/user.entity';
@@ -224,16 +228,19 @@ export class AuthService {
       data: {
         ...createUserDto,
         emailVerificationToken: token,
-        emailVerificationTokenExpires: (new Date(Date.now() + 60 * 60 * 1000)).toString(),
+        emailVerificationTokenExpires: new Date(
+          Date.now() + 60 * 60 * 1000,
+        ).toString(),
         password: hashedPassword,
-        isActive: true, 
+        isActive: true,
       },
     });
-  
+
     await this.emailService.sendVerificationEmail(user.email, token);
 
     return {
-      message: 'You have successfully signed up. Please check your email for verification instructions.',
+      message:
+        'You have successfully signed up. Please check your email for verification instructions.',
       full_name: user.full_name,
       email: user.email,
     };
@@ -247,20 +254,27 @@ export class AuthService {
     };
   }
 
-  async resetPassword(email: string, oldPassword: string, newPassword: string, confirmNewPassword: string): Promise<string> {
+  async resetPassword(
+    email: string,
+    oldPassword: string,
+    newPassword: string,
+    confirmNewPassword: string,
+  ): Promise<string> {
     const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new Error('User not found');
     }
     if (!(await bcrypt.compare(oldPassword, user.password))) {
-      throw new Error("Invalid Password");
+      throw new Error('Invalid Password');
     }
     if (newPassword !== confirmNewPassword) {
-      throw new Error("Passwords not matched.")
+      throw new Error('Passwords not matched.');
     }
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userService.updatePassword(user.id, { newPassword: hashedPassword }); // Update here
-    return "Password updated";
+    await this.userService.updatePassword(user.id, {
+      newPassword: hashedPassword,
+    }); // Update here
+    return 'Password updated';
   }
 
   async refresh(refreshToken: string) {
@@ -269,8 +283,12 @@ export class AuthService {
     return this.login(user);
   }
 
-  async confirmPassword(token: string, password: string, newPassword: string): Promise<string> {
-    const { email } = this.jwtService.verify(token)
+  async confirmPassword(
+    token: string,
+    password: string,
+    newPassword: string,
+  ): Promise<string> {
+    const { email } = this.jwtService.verify(token);
     const existingEmail = await this.userService.findByEmail(email);
     if (!existingEmail) {
       throw new ConflictException("Email doesn't exist");
@@ -278,8 +296,11 @@ export class AuthService {
     if (password !== newPassword) {
       throw new Error("Password didn't match. Try again.");
     }
-    await this.userService.confirmPassword(email, (await bcrypt.hash(password, 10)));
-    return "Password updated";
+    await this.userService.confirmPassword(
+      email,
+      await bcrypt.hash(password, 10),
+    );
+    return 'Password updated';
   }
 
   async findUserById(id: string): Promise<User> {
@@ -288,7 +309,7 @@ export class AuthService {
 
   async generateVerificationToken(email: string): Promise<string> {
     const payload = { email };
-    const token = this.jwtService.sign(payload, { expiresIn: '1h' }); 
+    const token = this.jwtService.sign(payload, { expiresIn: '1h' });
     return token;
   }
 
@@ -307,7 +328,7 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: { email },
     });
-    console.log(user)
+    console.log(user);
     if (!user) {
       throw new UnauthorizedException('Invalid token or email');
     }
@@ -316,7 +337,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid token or email');
     }
 
-    if ((new Date()).toString() > user.emailVerificationTokenExpires) {
+    if (new Date().toString() > user.emailVerificationTokenExpires) {
       throw new UnauthorizedException('Verification token expired');
     }
 
@@ -329,8 +350,7 @@ export class AuthService {
       },
     });
   }
-  
-  
+
   async verifyAndConfirmEmail(token: string): Promise<string> {
     try {
       const payload = this.jwtService.verify(token, {
@@ -357,7 +377,7 @@ export class AuthService {
         },
       });
 
-      return "Your account has been confirmed and activated.";
+      return 'Your account has been confirmed and activated.';
     } catch (error) {
       throw new UnauthorizedException('Invalid or expired verification token');
     }
@@ -372,7 +392,11 @@ export class AuthService {
     }
   }
 
-  async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<string> {
+  async changePassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<string> {
     const user = await this.userService.findById(userId);
     if (!user) {
       throw new Error('User not found');
@@ -382,7 +406,9 @@ export class AuthService {
       throw new Error('Invalid old password');
     }
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userService.updatePassword(userId, { newPassword: hashedPassword });
+    await this.userService.updatePassword(userId, {
+      newPassword: hashedPassword,
+    });
     return 'Password updated successfully';
   }
 

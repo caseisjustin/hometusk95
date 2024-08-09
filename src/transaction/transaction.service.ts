@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 @Injectable()
 export class TransactionService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   create(createTransactionDto: CreateTransactionDto) {
     return this.prisma.transaction.create({
@@ -13,8 +17,18 @@ export class TransactionService {
     });
   }
 
-  findAll() {
-    return this.prisma.transaction.findMany();
+  async findAll() {
+    const transactions = await this.cacheManager.get('transactions');
+    if (transactions) {
+      return transactions;
+    }
+
+    let data = await this.prisma.transaction.findMany();
+    if (data) {
+      this.cacheManager.set('transactions', data, 20000);
+      return data;
+    }
+    return "Couldn't find";
   }
 
   findOne(id: string) {

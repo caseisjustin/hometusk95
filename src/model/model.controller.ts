@@ -10,13 +10,11 @@ import {
 } from '@nestjs/common';
 import { ModelService } from './model.service';
 import { CreateModelDto } from './dto/create-model.dto';
-import {UpdateModelDto} from './dto/update-model.dto'
+import { UpdateModelDto } from './dto/update-model.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from '../common/enums/role.enum';
-
-
 
 @Controller('model')
 export class ModelController {

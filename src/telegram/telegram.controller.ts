@@ -8,6 +8,9 @@ export class TelegramController {
 
   @Post('notify')
   sendNotification(@Body() sendNotificationDto: SendNotificationDto) {
-    return this.telegramService.sendNotification(sendNotificationDto.chatId, sendNotificationDto.message);
+    return this.telegramService.sendNotification(
+      sendNotificationDto.chatId,
+      sendNotificationDto.message,
+    );
   }
 }

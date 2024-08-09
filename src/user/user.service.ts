@@ -1,23 +1,36 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+  Inject,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from 'src/common/enums/role.enum';
 import { MailerService } from '@nestjs-modules/mailer';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailerService: MailerService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { email, phone, full_name, avatar, password, emailVerificationToken, emailVerificationTokenExpires } = createUserDto;
+    const {
+      email,
+      phone,
+      full_name,
+      avatar,
+      password,
+      emailVerificationToken,
+      emailVerificationTokenExpires,
+    } = createUserDto;
 
     const user = await this.prisma.user.create({
       data: {
@@ -29,7 +42,7 @@ export class UserService {
         emailVerificationToken,
         emailVerificationTokenExpires,
         role: createUserDto.role,
-        isActive: false, 
+        isActive: false,
       },
     });
 
@@ -45,9 +58,21 @@ export class UserService {
 
   async findAll(requestedRole?: Role) {
     if (requestedRole && ![Role.Admin, Role.Owner].includes(requestedRole)) {
-      throw new ForbiddenException('You do not have permission to view all users.');
+      throw new ForbiddenException(
+        'You do not have permission to view all users.',
+      );
     }
-    return this.prisma.user.findMany();
+    const users = await this.cacheManager.get('users');
+    if (users) {
+      return users;
+    }
+
+    let data = await this.prisma.user.findMany();
+    if (data) {
+      this.cacheManager.set('users', data, 20000);
+      return data;
+    }
+    return "Couldn't find";
   }
 
   async findOne(userId: string) {
@@ -68,11 +93,10 @@ export class UserService {
     const user = await this.prisma.user.findFirst({ where: { full_name } });
     return user;
   }
-  
+
   async findById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
   }
- 
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.prisma.user.findUnique({ where: { id } });
@@ -97,21 +121,20 @@ export class UserService {
     });
   }
 
-
   async confirmPassword(email: string, newPassword: string): Promise<void> {
     await this.prisma.user.update({
       where: { email },
       data: { password: newPassword },
     });
   }
-  
+
   async confirmEmail(userId: string): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    
+
     if (!user) {
       throw new Error('User not found');
     }
-    
+
     await this.prisma.user.update({
       where: { id: userId },
       data: {
@@ -128,7 +151,6 @@ export class UserService {
       data: { password: updatePasswordDto.newPassword },
     });
   }
-  
 
   // async updateVerificationStatus(email: string, isVerified: boolean): Promise<void> {
   //   const user = await this.prisma.user.findUnique({ where: { email } });

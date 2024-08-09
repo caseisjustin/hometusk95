@@ -20,13 +20,19 @@ export class TelegramService {
 
     const webhookUrl = this.configService.get<string>('WEBHOOK_URL');
     if (webhookUrl) {
-      this.bot.telegram.setWebhook(webhookUrl).then(() => {
-        this.logger.log('Webhook set successfully');
-      }).catch(err => {
-        this.logger.error('Error setting webhook', err);
-      });
+      this.bot.telegram
+        .setWebhook(webhookUrl)
+        .then(() => {
+          this.logger.log('Webhook set successfully');
+        })
+        .catch((err) => {
+          this.logger.error('Error setting webhook', err);
+        });
     } else {
-      this.bot.launch().then(() => this.logger.log('Telegram bot started')).catch(err => this.logger.error('Error launching bot', err));
+      this.bot
+        .launch()
+        .then(() => this.logger.log('Telegram bot started'))
+        .catch((err) => this.logger.error('Error launching bot', err));
     }
   }
 

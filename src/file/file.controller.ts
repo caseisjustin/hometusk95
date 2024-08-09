@@ -31,7 +31,7 @@ export class FileController {
       url: file.path,
       mimetype: file.mimetype,
       size: file.size,
-      car_id: null, 
+      car_id: null,
     };
     return this.fileService.create(createFileDto);
   }
