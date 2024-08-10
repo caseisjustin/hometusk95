@@ -19,24 +19,32 @@ import { Role } from 'src/common/enums/role.enum';
 import { Admin } from 'typeorm';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
+import { ResetPasswdDto } from './dto/resetPasswd.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('register')
+  @ApiOperation({ summary: 'Register user' })
+  @ApiResponse({ status: 403, description: 'forbidden' })
   async register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @ApiOperation({ summary: 'User login' })
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('reset-password')
+  @ApiOperation({ summary: 'Reset Password' })
   async resetPassword(@Body() body) {
     const { email, oldPassword, newPassword, confirmNewPassword } = body;
     return this.authService.resetPassword(
@@ -48,13 +56,15 @@ export class AuthController {
   }
 
   @Post('forgot-password')
+  @ApiOperation({ summary: 'Backup user password | forgot pass' })
   async forgotPassword(@Body() body) {
     const { email } = body;
     return this.authService.forgotPassword(email);
   }
 
   @Post('verifypass')
-  async verifyPassword(@Body() body, @Query() param) {
+  @ApiOperation({ summary: 'Will get link from email for this endpoint' })
+  async verifyPassword(@Body() body: ResetPasswdDto, @Query() param) {
     const { password, newPassword } = body;
     const { token } = param;
     return this.authService.confirmPassword(token, password, newPassword);
@@ -68,6 +78,8 @@ export class AuthController {
     return { message: 'Email verified successfully' };
   }
 
+
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('renew-tokens')
   async renewTokens(@Request() req) {

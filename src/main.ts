@@ -4,7 +4,7 @@ import * as session from 'express-session';
 import rateLimit from 'express-rate-limit';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -36,13 +36,20 @@ async function bootstrap() {
     }),
   );
 
-  const options = new DocumentBuilder()
+  const config = new DocumentBuilder()
     .setTitle('RentCar API')
     .setDescription('RentCar API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(app, options);
+
+  const options: SwaggerDocumentOptions = {
+    operationIdFactory: (
+      controllerKey: string,
+      methodKey: string
+    ) => methodKey
+  };
+  const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
