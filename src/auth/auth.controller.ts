@@ -72,6 +72,7 @@ export class AuthController {
 
   @Get('verify-email')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'email verification' })
   async verifyEmail(@Query() verifyEmailDto: VerifyEmailDto) {
     const { token, email } = verifyEmailDto;
     await this.authService.verifyEmail(token, email);
@@ -80,6 +81,7 @@ export class AuthController {
 
 
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'get new tokens' })
   @UseGuards(JwtAuthGuard)
   @Post('renew-tokens')
   async renewTokens(@Request() req) {
