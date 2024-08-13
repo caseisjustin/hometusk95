@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TelegramController } from './telegram.controller';
-import { TelegramService } from './telegram.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { TelegramController } from "./telegram.controller";
+import { TelegramService } from "./telegram.service";
 
-describe('TelegramController', () => {
+describe("TelegramController", () => {
   let controller: TelegramController;
 
   beforeEach(async () => {
@@ -14,7 +14,7 @@ describe('TelegramController', () => {
     controller = module.get<TelegramController>(TelegramController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

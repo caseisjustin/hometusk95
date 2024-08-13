@@ -1,18 +1,18 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { CompanyModule } from './company/company.module';
-import { UserModule } from './user/user.module';
-import { CarModule } from './car/car.module';
-import { ModelModule } from './model/model.module';
-import { TransactionModule } from './transaction/transaction.module';
-import { FileModule } from './file/file.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { PrismaService } from './prisma/prisma.service';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { EmailModule } from './email/email.module';
-import { CacheModule } from '@nestjs/cache-manager';
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AuthModule } from "./auth/auth.module";
+import { CompanyModule } from "./company/company.module";
+import { UserModule } from "./user/user.module";
+import { CarModule } from "./car/car.module";
+import { ModelModule } from "./model/model.module";
+import { TransactionModule } from "./transaction/transaction.module";
+import { FileModule } from "./file/file.module";
+import { MulterModule } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
+import { PrismaService } from "./prisma/prisma.service";
+import { MailerModule } from "@nestjs-modules/mailer";
+import { EmailModule } from "./email/email.module";
+import { CacheModule } from "@nestjs/cache-manager";
 
 @Module({
   imports: [
@@ -26,15 +26,15 @@ import { CacheModule } from '@nestjs/cache-manager';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          host: 'sandbox.smtp.mailtrap.io',
+          host: "sandbox.smtp.mailtrap.io",
           port: 2525,
           auth: {
-            user: configService.get<string>('EMAIL_USER'),
-            pass: configService.get<string>('EMAIL_PASS'),
+            user: configService.get<string>("EMAIL_USER"),
+            pass: configService.get<string>("EMAIL_PASS"),
           },
         },
         defaults: {
-          from: 'No reply <officialbegzodbek@gmail.com>',
+          from: "No reply <officialbegzodbek@gmail.com>",
         },
       }),
       inject: [ConfigService],
@@ -49,7 +49,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     EmailModule,
     MulterModule.register({
       storage: diskStorage({
-        destination: './uploads',
+        destination: "./uploads",
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`;
           cb(null, filename);

@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { TelegrafModule } from 'nestjs-telegraf';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TelegramService } from './telegram.service';
-import { TelegramController } from './telegram.controller';
+import { Module } from "@nestjs/common";
+import { TelegrafModule } from "nestjs-telegraf";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { TelegramService } from "./telegram.service";
+import { TelegramController } from "./telegram.controller";
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import { TelegramController } from './telegram.controller';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        token: configService.get<string>('TELEGRAM_BOT_TOKEN'),
+        token: configService.get<string>("TELEGRAM_BOT_TOKEN"),
       }),
     }),
   ],

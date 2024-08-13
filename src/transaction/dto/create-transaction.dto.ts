@@ -4,9 +4,9 @@ import {
   IsNumber,
   IsJSON,
   IsDateString,
-} from 'class-validator';
-import { TransactionStatus } from '../../common/enums/transaction-status.enum';
-import { ApiProperty } from '@nestjs/swagger';
+} from "class-validator";
+import { TransactionStatus } from "../../common/enums/transaction-status.enum";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateTransactionDto {
   @IsUUID()

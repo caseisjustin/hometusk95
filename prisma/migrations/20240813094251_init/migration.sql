@@ -26,11 +26,12 @@ CREATE TABLE "User" (
     "phone" TEXT NOT NULL,
     "avatar" TEXT,
     "role" "Role" NOT NULL,
-    "emailVerificationToken" TEXT NOT NULL,
-    "emailVerificationTokenExpires" TEXT NOT NULL,
+    "emailVerificationToken" TEXT,
+    "emailVerificationTokenExpires" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "last_edited_at" TIMESTAMP(3) NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT false,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

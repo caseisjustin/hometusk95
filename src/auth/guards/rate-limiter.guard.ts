@@ -1,5 +1,5 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { RateLimiterMemory } from 'rate-limiter-flexible';
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 @Injectable()
 export class RateLimiterGuard implements CanActivate {

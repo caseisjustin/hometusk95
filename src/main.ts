@@ -1,11 +1,15 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as session from 'express-session';
-import rateLimit from 'express-rate-limit';
-import { ValidationPipe } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
-import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
-import { ConfigService } from '@nestjs/config';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import * as session from "express-session";
+import rateLimit from "express-rate-limit";
+import { ValidationPipe } from "@nestjs/common";
+import * as cookieParser from "cookie-parser";
+import {
+  SwaggerModule,
+  DocumentBuilder,
+  SwaggerDocumentOptions,
+} from "@nestjs/swagger";
+import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -29,7 +33,7 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: 'your-secret-key', // Replace with your own secret key
+      secret: "your-secret-key", // Replace with your own secret key
       resave: false,
       saveUninitialized: false,
       cookie: { maxAge: 3600000 }, // 1 hour
@@ -37,20 +41,17 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('RentCar API')
-    .setDescription('RentCar API documentation')
-    .setVersion('1.0')
+    .setTitle("RentCar API")
+    .setDescription("RentCar API documentation")
+    .setVersion("1.0")
     .addBearerAuth()
     .build();
 
   const options: SwaggerDocumentOptions = {
-    operationIdFactory: (
-      controllerKey: string,
-      methodKey: string
-    ) => methodKey
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
   };
   const document = SwaggerModule.createDocument(app, config, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup("api", app, document);
 
   await app.listen(3000);
 }

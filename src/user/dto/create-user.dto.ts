@@ -7,9 +7,9 @@ import {
   IsString,
   IsPhoneNumber,
   IsDateString,
-} from 'class-validator';
-import { Role } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
+} from "class-validator";
+import { Role } from "@prisma/client";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto {
   @ApiProperty()
@@ -26,7 +26,7 @@ export class CreateUserDto {
   full_name: string;
 
   @ApiProperty()
-  @IsPhoneNumber('US')
+  @IsPhoneNumber("US")
   phone: string;
 
   @ApiProperty()

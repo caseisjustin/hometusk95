@@ -4,8 +4,8 @@ import {
   MinLength,
   IsOptional,
   IsStrongPassword,
-} from 'class-validator';
-import { Role } from '@prisma/client';
+} from "class-validator";
+import { Role } from "@prisma/client";
 
 export class RegisterDto {
   @IsEmail()

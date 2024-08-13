@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { PassportSerializer } from '@nestjs/passport';
-import { UserService } from '../user/user.service';
-import { User } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PassportSerializer } from "@nestjs/passport";
+import { UserService } from "../user/user.service";
+import { User } from "@prisma/client";
 
 @Injectable()
 export class SessionSerializer extends PassportSerializer {
@@ -17,7 +17,7 @@ export class SessionSerializer extends PassportSerializer {
     try {
       const user = await this.userService.findById(userId);
       if (!user) {
-        return done(new Error('User not found'), null);
+        return done(new Error("User not found"), null);
       }
       done(null, user);
     } catch (error) {

@@ -3,15 +3,15 @@ import {
   NotFoundException,
   ForbiddenException,
   Inject,
-} from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { Role } from 'src/common/enums/role.enum';
-import { MailerService } from '@nestjs-modules/mailer';
-import { User } from './entities/user.entity';
-import { UpdatePasswordDto } from './dto/update-password.dto';
-import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+} from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { Role } from "src/common/enums/role.enum";
+import { MailerService } from "@nestjs-modules/mailer";
+import { User } from "./entities/user.entity";
+import { UpdatePasswordDto } from "./dto/update-password.dto";
+import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 
 @Injectable()
 export class UserService {
@@ -59,17 +59,17 @@ export class UserService {
   async findAll(requestedRole?: Role) {
     if (requestedRole && ![Role.Admin, Role.Owner].includes(requestedRole)) {
       throw new ForbiddenException(
-        'You do not have permission to view all users.',
+        "You do not have permission to view all users.",
       );
     }
-    const users = await this.cacheManager.get('users');
+    const users = await this.cacheManager.get("users");
     if (users) {
       return users;
     }
 
     let data = await this.prisma.user.findMany();
     if (data) {
-      this.cacheManager.set('users', data, 20000);
+      this.cacheManager.set("users", data, 20000);
       return data;
     }
     return "Couldn't find";
@@ -132,7 +132,7 @@ export class UserService {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     await this.prisma.user.update({

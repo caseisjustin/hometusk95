@@ -1,5 +1,5 @@
 // update-user.dto.ts
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsOptional,
   IsString,
@@ -7,8 +7,8 @@ import {
   IsPhoneNumber,
   IsEnum,
   IsBoolean,
-} from 'class-validator';
-import { Role } from 'src/common/enums/role.enum';
+} from "class-validator";
+import { Role } from "src/common/enums/role.enum";
 
 export class UpdateUserDto {
   @IsOptional()

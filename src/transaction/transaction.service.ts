@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
-import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject, Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateTransactionDto } from "./dto/create-transaction.dto";
+import { UpdateTransactionDto } from "./dto/update-transaction.dto";
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
 
 @Injectable()
 export class TransactionService {
@@ -18,14 +18,14 @@ export class TransactionService {
   }
 
   async findAll() {
-    const transactions = await this.cacheManager.get('transactions');
+    const transactions = await this.cacheManager.get("transactions");
     if (transactions) {
       return transactions;
     }
 
     let data = await this.prisma.transaction.findMany();
     if (data) {
-      this.cacheManager.set('transactions', data, 20000);
+      this.cacheManager.set("transactions", data, 20000);
       return data;
     }
     return "Couldn't find";

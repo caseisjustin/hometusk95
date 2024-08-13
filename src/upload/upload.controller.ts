@@ -3,19 +3,19 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadService } from './upload.service';
-import multer from 'multer';
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { UploadService } from "./upload.service";
+import multer from "multer";
 
-@Controller('upload')
+@Controller("upload")
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post('avatar')
+  @Post("avatar")
   @UseInterceptors(
-    FileInterceptor('file', {
-      storage: multer.diskStorage({ destination: './uploads' }),
+    FileInterceptor("file", {
+      storage: multer.diskStorage({ destination: "./uploads" }),
     }),
   )
   uploadFile(@UploadedFile() file) {

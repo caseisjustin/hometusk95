@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
-import { UserService } from 'src/user/user.service';
+import { Injectable } from "@nestjs/common";
+import { MailerService } from "@nestjs-modules/mailer";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class EmailService {
@@ -12,7 +12,7 @@ export class EmailService {
     const url = `http://localhost:3000/auth/verify-email?token=${token}&email=${email}`;
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Verify your email',
+      subject: "Verify your email",
       html: `Please verify your email by clicking this link <a href=${url}>VERIFY</a>`, // Context data for your template
     });
   }
@@ -20,7 +20,7 @@ export class EmailService {
     const url = `http://localhost:3000/auth/verifypass?token=${token}`;
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Reset password',
+      subject: "Reset password",
       html: `Please use this link to reset your password <a href=${url}>VERIFY</a>`, // Context data for your template
     });
   }

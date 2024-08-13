@@ -1,4 +1,4 @@
-import { TransactionStatus } from '../../common/enums/transaction-status.enum';
+import { TransactionStatus } from "../../common/enums/transaction-status.enum";
 
 export class Transaction {
   id: string;

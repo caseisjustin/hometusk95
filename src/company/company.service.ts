@@ -1,8 +1,8 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
-import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import { CreateCompanyDto } from "./dto/create-company.dto";
+import { UpdateCompanyDto } from "./dto/update-company.dto";
+import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 
 @Injectable()
 export class CompanyService {
@@ -22,14 +22,14 @@ export class CompanyService {
   }
 
   async findAll() {
-    const companies = await this.cacheManager.get('companies');
+    const companies = await this.cacheManager.get("companies");
     if (companies) {
       return companies;
     }
 
     let data = await this.prisma.company.findMany();
     if (data) {
-      this.cacheManager.set('companies', data, 20000);
+      this.cacheManager.set("companies", data, 20000);
       return data;
     }
     return "Couldn't find";

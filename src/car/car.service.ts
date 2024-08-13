@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateCarDto } from './dto/create-car.dto';
-import { UpdateCarDto } from './dto/update-car.dto';
-import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Injectable, Inject } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { CreateCarDto } from "./dto/create-car.dto";
+import { UpdateCarDto } from "./dto/update-car.dto";
+import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager";
 
 @Injectable()
 export class CarService {
@@ -18,14 +18,14 @@ export class CarService {
   }
 
   async findAll() {
-    const cars = await this.cacheManager.get('cars');
+    const cars = await this.cacheManager.get("cars");
     if (cars) {
       return cars;
     }
 
     let data = await this.prisma.car.findMany();
     if (data) {
-      this.cacheManager.set('cars', data, 20000);
+      this.cacheManager.set("cars", data, 20000);
       return data;
     }
     return "Couldn't find";
