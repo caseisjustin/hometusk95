@@ -328,7 +328,6 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: { email },
     });
-    console.log(user);
     if (!user) {
       throw new UnauthorizedException("Invalid token or email");
     }
